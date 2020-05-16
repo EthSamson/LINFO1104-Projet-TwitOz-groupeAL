@@ -30,44 +30,44 @@ define
     end
 
 %%% Parsing - Consumer 1/Producer 2
-    % Renvoie une liste ou chaque element sont 
+    % Renvoie une liste ou chaque element sont modifié
     % @pre L : une liste de Strings (les tweets)
     fun {Parsing L}
        case L
-       of H|T then {A H}|{Parsing T}
+       of H|T then {ParsStr H}|{Parsing T}
        [] nil then nil end
     end
     
 %%% Fonction qui modifie les caractères
-    fun {A Tw}
+    fun {ParsStr Tw}
        case Tw
        of H|T then
-	  if H==35 then 32|{A T} %#
+	  if H==35 then 32|{ParsStr T} %#
 	 % Remplacer par des espaces
-	  elseif H==64 then 32|{A T} %@
-          elseif H==36 then 32|{A T} %$
-          elseif H==37 then 32|{A T} %%
-          elseif H==95 then 32|{A T} %_
-          elseif H==91 then 32|{A T} %[
-          elseif H==93 then 32|{A T} %]
-          elseif H==123 then 32|{A T} %{
-          elseif H==125 then 32|{A T} %}
-          elseif H==38 then 32|{A T} %&
-          elseif H==42 then 32|{A T} %*
-          elseif H==47 then 32|{A T} %/
+	  elseif H==64 then 32|{ParsStr T} %@
+          elseif H==36 then 32|{ParsStr T} %$
+          elseif H==37 then 32|{ParsStr T} %%
+          elseif H==95 then 32|{ParsStr T} %_
+          elseif H==91 then 32|{ParsStr T} %[
+          elseif H==93 then 32|{ParsStr T} %]
+          elseif H==123 then 32|{ParsStr T} %{
+          elseif H==125 then 32|{ParsStr T} %}
+          elseif H==38 then 32|{ParsStr T} %&
+          elseif H==42 then 32|{ParsStr T} %*
+          elseif H==47 then 32|{ParsStr T} %/
 
 	 % Remplace par un vides
-	  elseif H==59 then {A T} %;
-          elseif H==58 then {A T} %:
-          elseif H==44 then {A T} %,
-          elseif H==39 then {A T} %'
+	  elseif H==59 then {ParsStr T} %;
+          elseif H==58 then {ParsStr T} %:
+          elseif H==44 then {ParsStr T} %,
+          elseif H==39 then {ParsStr T} %'
 
 	 % Remplacer par des points
-          elseif H==63 then 46|{A T} %?
-          elseif H==33 then 46|{A T} %!
+          elseif H==63 then 46|{ParsStr T} %?
+          elseif H==33 then 46|{ParsStr T} %!
 
 	 % Ne pas changer les lettres
-          else H|{A T} end
+          else H|{ParsStr T} end
        [] nil then nil end
     end
 
