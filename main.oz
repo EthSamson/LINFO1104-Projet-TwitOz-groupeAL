@@ -42,11 +42,10 @@ define
        [] nil then nil end
     end
 
-    % Fonction qui modifie les caractères inutiles d'un tweets
+    % Fonction qui modifie les caractËres inutiles d'un tweets
     fun {ParsStr Tw}
        case Tw
        of H|T then
-	  % Remplacer par des points
 	  % Remplacer par des espaces
 	  if H==35 then 32|{ParsStr T} %#
 	  elseif H==64 then 32|{ParsStr T} %@
@@ -106,10 +105,20 @@ define
        if Val=={String.toAtom nil} then skip
        elseif Key=={String.toAtom nil} then skip
        elseif {Dictionary.member D Key} then
- 	  {Dictionary.put D Key {Append {Dictionary.get D Key} Val|nil}}
+	  {Dictionary.put D Key {ChangeTupleInDic {Dictionary.get D Key} Val}}
        else
-	  {Dictionary.put D Key Val|nil}
+	  {Dictionary.put D Key Val(1)|nil}
        end
+    end
+
+    %Renvoie une nouvelle liste avec le tuple Val change
+    fun {ChangeTupleInDic Lt Val}
+       case Lt
+       of H|T then
+ 	 if Val=={Label H} then 
+ 	    {Tuple.append add(1) H}|T
+ 	 else H|{ChangeTupleInDic T Val} end
+       [] nil then Val(1)|nil end
     end
 
  
