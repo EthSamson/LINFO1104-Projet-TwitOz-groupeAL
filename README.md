@@ -34,12 +34,15 @@ usern@me:~yourpath$  make clean
  - Scan : une fonction qui prend comme argument le nom d'un fichier et un nombre.Et elle retourne la Nème ligne où N est le nombre mis en argument.
 
 ## Fonctions dans le main.oz:
- - Lecture :
- - LectureAux :
- - Parsing :
- - ParsStr : 
- - SaveInDic1 :
- - SaveIndic2 :
- - AddInDic :
- - ChangeTupleInDic :
+ - Lecture : Elle prend comme argument un nom de fichier et retourne une liste où chaque ligne du fichier est un élément de la liste
+ - Parsing : Elle prend comme argument une liste et renvoie une liste où chaque éléments sont une liste de mots
+ - ParsStr : Elle prend la liste qui lui ai donnée par Parsing et elle modifier les caractères inutiles d'un tweet
+ - SaveInDic1 : Elle regarde la liste tweet par tweet
+ - SaveIndic2 : Elle regarde le tweet mot par mot
+ - AddInDic : Elle ajoute dans le dictionnaire les mots
+ - ChangeTupleInDic : elle renvoie le tuple modifié (il a un élément en plus)
+ - Pred : elle renvoie le label du tuple qui a la plus grande longueur en fonction d'une key
+ - HaveListWord : elle renvoie une liste avec les mots du string eu en entrée 
+ - LastWord : elle renvoie le dernier mot de la liste
+ - HaveValue : elle renvoie la valeur correspondant à clé et nil si la clé n'existe pas
  
