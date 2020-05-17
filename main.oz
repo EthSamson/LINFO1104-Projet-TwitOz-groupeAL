@@ -12,11 +12,6 @@ define
     Browse = Browser.browse
     Show = System.show
 
-%%% Read File
-    fun {GetFirstLine IN_NAME}
-        {Reader.scan {New Reader.textfile init(name:IN_NAME)} 1}
-    end
-
 %%%LECTURE%%%
     % Cree une liste ou chaque element est un tweet du fichier FileName
     fun {Lecture FileName}
@@ -122,33 +117,16 @@ define
     end
 
 %%%PREDICTION ECRITURE%%%
-    %Renvoie le label du plus grand tuple
+    %Renvoie le label du plus grand tuple sous forme de String
     %@pre : W et L sont des accumulateurs initialise a 0 et nil
+    %       Lm est la valeur du dictionnaire a la key voulue
     fun {Pred Lm W L}
        case Lm
        of H|T then
 	  if W=<{Width H} then {Pred T {Width H} {Label H}}
 	  else {Pred T W L} end
-       [] nil then L end
+       [] nil then {Atom.toString L} end
     end
-
-    fun{HaveListWord S D}
-       {LastWord {String.tokens S & } D}
-    end
-
-    fun{LastWord L D}
-       case L
-       of H|T then
-	  if L.2 \= nil then {LastWord T D}
-	  else {HaveValue {String.toAtom H} D} end
-       [] nil then nil end
-    end
-
-    fun{HaveValue K D}
-       if {Dictionary.member D K} then {Atom.toString {Pred {Dictionary.get D K} 0 nil}}
-       else nil end
-    end
-
  
 %%% Main
 %    for N in 1..1 do F1 F2 Li1 Li2 Lp1 Lp2 L1 L2 P1 P2  in
@@ -165,17 +143,14 @@ define
 %       thread {Wait P2} {Sauvegarde Li1} end
 
     %Test pour visualiser lecture et parsing
-    %local
     Dic={NewDictionary} L P L1 P1 S1
-    %in
     thread L = {Lecture "tweets/aTest_1.txt"} L1=1 end
     thread {Wait L1} P = {Parsing L} P1=1 end
-    {Browse P}
+    %{Browse P}
     thread {Wait P1} {SaveInDic1 Dic P} {Browse {Dictionary.entries Dic}} S1=1 end
     {Wait S1}
     {Browse {Pred {Dictionary.get Dic {String.toAtom "Je"}} 0 nil}}
     %ATTENTION Dic pas accessible en dehors du thread
-    %end
 	  
 %%% GUI
     % Make the window description, all the parameters are explained here:
@@ -189,17 +164,24 @@ define
         text(handle:Text2 width:35 height:10 background:black foreground:white glue:w wrap:word)
         action:proc{$}{Application.exit 0} end % quit app gracefully on window closing
     )
-    proc {Press} Inserted in
-        Inserted = {HaveListWord {Text1 getText(p(1 0) 'end' $)} Dic}
-        %Inserted = {Text1 getText(p(1 0) 'end' $)} % example using coordinates to get text
-        {Text2 set(1:Inserted)} % you can get/set text this way too
+    proc {Press} Inserted S E A in
+        S = {String.tokens {Text1 getText(p(1 0) 'end' $)} & }
+        E = {List.last S}
+        {Browse E}
+        A = {String.tokens E &\n}
+        {Browse A.1}
+        Inserted = {Pred {Dictionary.get Dic {String.toAtom A.1}} 0 nil}
+        %{Browse Inserted}
+        %Inserted = {HaveListWord {Text1 getText(p(1 0) 'end' $)} Dic}
+        %Inserted = {List.append {Text1 getText(p(1 0) 'end' $)} Aj}% example using coordinates to get text      
+        {Text2 set(Inserted)} % you can get/set text this way too
     end
     % Build the layout from the description
     W={QTk.build Description}
     {W show}
 
     %{Text1 tk(insert 'end' {GetFirstLine "tweets/part_1.txt"})}
-    {Text1 bind(event:"<Control-p>" action:Press)} % You can also bind events
+    {Text1 bind(event:"<Control-s>" action:Press)} % You can also bind events
 
     {Show 'You can print in the terminal...'}
     {Browse '...or you can use the Browser'}
