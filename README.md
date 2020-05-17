@@ -27,8 +27,6 @@ Pour les supprimer, il faut jsute exécuter la commande suivante
 usern@me:~yourpath$  make clean
 ```
 
-## Fonctionnement général du code:
-
 
 ## Fonction dans le Reader.oz:
  - Scan : une fonction qui prend comme argument le nom d'un fichier et un nombre.Et elle retourne la Nème ligne où N est le nombre mis en argument.
@@ -41,8 +39,6 @@ usern@me:~yourpath$  make clean
  - SaveIndic2 : Elle regarde le tweet mot par mot
  - AddInDic : Elle ajoute dans le dictionnaire les mots
  - ChangeTupleInDic : elle renvoie le tuple modifié (il a un élément en plus)
- - Pred : elle renvoie le label du tuple qui a la plus grande longueur en fonction d'une key
- - HaveListWord : elle renvoie une liste avec les mots du string eu en entrée 
- - LastWord : elle renvoie le dernier mot de la liste
- - HaveValue : elle renvoie la valeur correspondant à clé et nil si la clé n'existe pas
+ - Pred : Elle renvoie le label du tuple qui a la plus grande longueur en fonction d'une key
+
  
