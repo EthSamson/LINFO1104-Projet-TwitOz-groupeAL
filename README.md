@@ -11,7 +11,7 @@ L'objectif était de prédire un mot à partir du mot précédent suivant une ba
 
 ## Structure globale
 
-*< main.oz >* : permet l'exécution global du code et reprend l'ensemble des functions de LECTURE, PARSING, SAUVEGARDE ainsi que la PREDICTION.
+*< main.oz >* : permet l'exécution global du code et reprend l'ensemble des fonctions de LECTURE, PARSING, SAUVEGARDE ainsi que la PREDICTION.
 
 *< Reader.oz >* : fichier qui reprend le nécessaire afin de lire un fichier texte.
 
@@ -48,4 +48,4 @@ Nous divisons le programme en quatres exécutions :
 
 - La sauvegarde : Ici nous enregistrons les paires de mots dans un dictionnaire ce qui permettra d'aller chercher plus facilement les  prédictions. Ce travaille est effectué par un seul thread qui reprend le informations des deux threads de parsing.
 
-- La prédiction : Cette étape débute dans l'interface graphique. Lorsqu'on appuye sur le bouton "Prédiction" et qu'un mot est entré dans la zone de texte blanche le programme va détercté le dernier mot écrit et va renvoyer la prédiction du mot suivant dans la zone de texte noir.
+- La prédiction : Cette étape débute dans l'interface graphique. Lorsqu'on appuye sur le bouton "Prédiction" et qu'un mot est entré dans la zone de texte blanche le programme va détecté le dernier mot écrit et va renvoyer la prédiction du mot suivant dans la zone de texte noir.
