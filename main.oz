@@ -70,7 +70,7 @@ define
           elseif H==46 then 32|{ParsStr T} %.
 
 	  % Tout mettre en minuscules
-	  elseif {Char.isUpper H} then {Char.toLower H}|{ParsStr T}
+	  %elseif {Char.isUpper H} then {Char.toLower H}|{ParsStr T}
 	     
 	  % Ne pas changer les lettres
           else H|{ParsStr T} end
@@ -121,6 +121,34 @@ define
        [] nil then Val(1)|nil end
     end
 
+%%%PREDICTION ECRITURE%%%
+    %Renvoie le label du plus grand tuple
+    %@pre : W et L sont des accumulateurs initialise a 0 et nil
+    fun {Pred Lm W L}
+       case Lm
+       of H|T then
+	  if W=<{Width H} then {Pred T {Width H} {Label H}}
+	  else {Pred T W L} end
+       [] nil then L end
+    end
+
+    fun{HaveListWord S D}
+       {LastWord {String.tokens S & } D}
+    end
+
+    fun{LastWord L D}
+       case L
+       of H|T then
+	  if L.2 \= nil then {LastWord T D}
+	  else {HaveValue {String.toAtom H} D} end
+       [] nil then nil end
+    end
+
+    fun{HaveValue K D}
+       if {Dictionary.member D K} then {Atom.toString {Pred {Dictionary.get D K} 0 nil}}
+       else nil end
+    end
+
  
 %%% Main
 %    for N in 1..1 do F1 F2 Li1 Li2 Lp1 Lp2 L1 L2 P1 P2  in
@@ -137,15 +165,17 @@ define
 %       thread {Wait P2} {Sauvegarde Li1} end
 
     %Test pour visualiser lecture et parsing
-    local
-       Dic={NewDictionary} L P L1 P1
-    in
-       thread L = {Lecture "tweets/aTest_1.txt"} L1=1 end
-       thread {Wait L1} P = {Parsing L} P1=1 end
-       {Browse P}
-       thread {Wait P1} {SaveInDic1 Dic P} {Browse {Dictionary.entries Dic}} end
-       %ATTENTION Dic pas accessible en dehors du thread
-    end
+    %local
+    Dic={NewDictionary} L P L1 P1 S1
+    %in
+    thread L = {Lecture "tweets/aTest_1.txt"} L1=1 end
+    thread {Wait L1} P = {Parsing L} P1=1 end
+    {Browse P}
+    thread {Wait P1} {SaveInDic1 Dic P} {Browse {Dictionary.entries Dic}} S1=1 end
+    {Wait S1}
+    {Browse {Pred {Dictionary.get Dic {String.toAtom "Je"}} 0 nil}}
+    %ATTENTION Dic pas accessible en dehors du thread
+    %end
 	  
 %%% GUI
     % Make the window description, all the parameters are explained here:
@@ -154,21 +184,22 @@ define
         title: "Frequency count"
         lr(
             text(handle:Text1 width:35 height:10 background:white foreground:black wrap:word)
-	    button(text:"A changer  " action:Press)
+	    button(text:"Prédiction   " action:Press)
         )
         text(handle:Text2 width:35 height:10 background:black foreground:white glue:w wrap:word)
         action:proc{$}{Application.exit 0} end % quit app gracefully on window closing
     )
     proc {Press} Inserted in
-        Inserted = {Text1 getText(p(1 0) 'end' $)} % example using coordinates to get text
+        Inserted = {HaveListWord {Text1 getText(p(1 0) 'end' $)} Dic}
+        %Inserted = {Text1 getText(p(1 0) 'end' $)} % example using coordinates to get text
         {Text2 set(1:Inserted)} % you can get/set text this way too
     end
     % Build the layout from the description
     W={QTk.build Description}
     {W show}
 
-    {Text1 tk(insert 'end' {GetFirstLine "tweets/part_1.txt"})}
-    {Text1 bind(event:"<Control-s>" action:Press)} % You can also bind events
+    %{Text1 tk(insert 'end' {GetFirstLine "tweets/part_1.txt"})}
+    {Text1 bind(event:"<Control-p>" action:Press)} % You can also bind events
 
     {Show 'You can print in the terminal...'}
     {Browse '...or you can use the Browser'}
