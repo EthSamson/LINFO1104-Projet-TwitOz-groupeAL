@@ -31,5 +31,15 @@ usern@me:~yourpath$  make clean
 
 
 ## Fonction dans le Reader.oz:
+ - Scan : une fonction qui prend comme argument le nom d'un fichier et un nombre.Et elle retourne la Nème ligne où N est le nombre mis en argument.
 
-## Fonctions et structure dans le main.oz:
+## Fonctions dans le main.oz:
+ - Lecture :
+ - LectureAux :
+ - Parsing :
+ - ParsStr : 
+ - SaveInDic1 :
+ - SaveIndic2 :
+ - AddInDic :
+ - ChangeTupleInDic :
+ 
