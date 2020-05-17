@@ -1,4 +1,3 @@
-Hello@world?12
-Bonjour&au revoir.
-Hello$je suis reveille&
-Hello je suis endormi
+Je@suis#endormi
+Je$suis$eveille
+Je mange beaucoup
