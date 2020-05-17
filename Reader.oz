@@ -18,7 +18,7 @@ define
             none
         else
             if N==1 then
-                Line
+	       Line
             else
                 {Scan InFile N-1}
             end

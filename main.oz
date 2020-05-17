@@ -129,27 +129,28 @@ define
     end
  
 %%% Main
-%    for N in 1..1 do F1 F2 Li1 Li2 Lp1 Lp2 L1 L2 P1 P2  in
-%       F1 = "tweets/aTest_"#(N)#".txt"
-%       F2 = "tweets/_"#(N+104)#".txt"
-%       thread Li1 = {Lecture F1} L1=1 end
-%       thread Li2 = {Lecture F2} L2=2 end
+    Dic = {NewDictionary}
+    for N in 1..12 do F1 F2 Li1 Li2 Lp1 Lp2 L1 L2 P1 P2 S1 in
+       F1 = "tweets_dummies/part_"#(N)#".txt"
+       F2 = "tweets_dummies/part_"#(N+12)#".txt"
+       thread Li1 = {Lecture F1} L1=1 end
+       thread Li2 = {Lecture F2} L2=1 end
 
-%       thread {Wait L1} Lp1 = {Parsing Li1} P1=1 end
-%       thread {Wait L2} Lp2 = {Parsing Li2} P2=1 end
+       thread {Wait L1} Lp1 = {Parsing Li1} P1=1 end
+       thread {Wait L2} Lp2 = {Parsing Li2} P2=1 end
 
-%       Dic = {NewDictionary}
-%       thread {Wait P1} {Sauvegarde Li1} end
-%       thread {Wait P2} {Sauvegarde Li1} end
+       thread {Wait P1} {SaveInDic1 Dic Lp1} S1=1
+	      {Wait P2} {Wait S1} {SaveInDic1 Dic Lp2} end
+    end
 
     %Test pour visualiser lecture et parsing
-    Dic={NewDictionary} L P L1 P1 S1
-    thread L = {Lecture "tweets/aTest_1.txt"} L1=1 end
-    thread {Wait L1} P = {Parsing L} P1=1 end
+    %Dic={NewDictionary} L P L1 P1 S1
+    %thread L = {Lecture "tweets/aTest_1.txt"} L1=1 end
+    %thread {Wait L1} P = {Parsing L} P1=1 end
     %{Browse P}
-    thread {Wait P1} {SaveInDic1 Dic P} {Browse {Dictionary.entries Dic}} S1=1 end
-    {Wait S1}
-    {Browse {Pred {Dictionary.get Dic {String.toAtom "Je"}} 0 nil}}
+    %thread {Wait P1} {SaveInDic1 Dic P} {Browse {Dictionary.entries Dic}} S1=1 end
+    %{Wait S1}
+    %{Browse {Pred {Dictionary.get Dic {String.toAtom "Je"}} 0 nil}}
     %ATTENTION Dic pas accessible en dehors du thread
 	  
 %%% GUI
@@ -167,20 +168,16 @@ define
     proc {Press} Inserted S E A in
         S = {String.tokens {Text1 getText(p(1 0) 'end' $)} & }
         E = {List.last S}
-        {Browse E}
+        %{Browse E}
         A = {String.tokens E &\n}
-        {Browse A.1}
-        Inserted = {Pred {Dictionary.get Dic {String.toAtom A.1}} 0 nil}
-        %{Browse Inserted}
-        %Inserted = {HaveListWord {Text1 getText(p(1 0) 'end' $)} Dic}
-        %Inserted = {List.append {Text1 getText(p(1 0) 'end' $)} Aj}% example using coordinates to get text      
+        %{Browse A.1}
+        Inserted = {Pred {Dictionary.get Dic {String.toAtom A.1}} 0 nil}% example using coordinates to get text      
         {Text2 set(Inserted)} % you can get/set text this way too
     end
     % Build the layout from the description
     W={QTk.build Description}
     {W show}
 
-    %{Text1 tk(insert 'end' {GetFirstLine "tweets/part_1.txt"})}
     {Text1 bind(event:"<Control-s>" action:Press)} % You can also bind events
 
     {Show 'You can print in the terminal...'}
